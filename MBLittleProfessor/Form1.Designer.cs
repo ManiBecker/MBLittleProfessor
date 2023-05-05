@@ -31,13 +31,14 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.groupBoxDisplay = new System.Windows.Forms.GroupBox();
+            this.labelIcon = new System.Windows.Forms.Label();
             this.labelHint = new System.Windows.Forms.Label();
             this.labelLevel = new System.Windows.Forms.Label();
             this.labelInput = new System.Windows.Forms.Label();
             this.labelExercise = new System.Windows.Forms.Label();
             this.buttonStart = new System.Windows.Forms.Button();
             this.buttonLevel = new System.Windows.Forms.Button();
-            this.buttonRND = new System.Windows.Forms.Button();
+            this.button1x1 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -56,7 +57,6 @@
             this.labelResult = new System.Windows.Forms.Label();
             this.timerDisplay = new System.Windows.Forms.Timer(this.components);
             this.checkBoxHint = new System.Windows.Forms.CheckBox();
-            this.labelIcon = new System.Windows.Forms.Label();
             this.groupBoxDisplay.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -74,6 +74,16 @@
             this.groupBoxDisplay.TabIndex = 0;
             this.groupBoxDisplay.TabStop = false;
             this.groupBoxDisplay.Text = "groupBox1";
+            // 
+            // labelIcon
+            // 
+            this.labelIcon.Font = new System.Drawing.Font("Wingdings", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
+            this.labelIcon.Location = new System.Drawing.Point(150, -1);
+            this.labelIcon.Name = "labelIcon";
+            this.labelIcon.Size = new System.Drawing.Size(26, 26);
+            this.labelIcon.TabIndex = 4;
+            this.labelIcon.Text = "?";
+            this.labelIcon.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // labelHint
             // 
@@ -141,18 +151,18 @@
             this.buttonLevel.UseVisualStyleBackColor = false;
             this.buttonLevel.Click += new System.EventHandler(this.buttonLevel_Click);
             // 
-            // buttonRND
+            // button1x1
             // 
-            this.buttonRND.BackColor = System.Drawing.Color.Tomato;
-            this.buttonRND.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonRND.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonRND.Location = new System.Drawing.Point(22, 339);
-            this.buttonRND.Name = "buttonRND";
-            this.buttonRND.Size = new System.Drawing.Size(43, 23);
-            this.buttonRND.TabIndex = 3;
-            this.buttonRND.Text = "1 x 1";
-            this.buttonRND.UseVisualStyleBackColor = false;
-            this.buttonRND.Click += new System.EventHandler(this.buttonRND_Click);
+            this.button1x1.BackColor = System.Drawing.Color.Tomato;
+            this.button1x1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1x1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1x1.Location = new System.Drawing.Point(22, 339);
+            this.button1x1.Name = "button1x1";
+            this.button1x1.Size = new System.Drawing.Size(43, 23);
+            this.button1x1.TabIndex = 3;
+            this.button1x1.Text = "1 x 1";
+            this.button1x1.UseVisualStyleBackColor = false;
+            this.button1x1.Click += new System.EventHandler(this.button1x1_Click);
             // 
             // button1
             // 
@@ -375,16 +385,6 @@
             this.checkBoxHint.UseVisualStyleBackColor = true;
             this.checkBoxHint.CheckedChanged += new System.EventHandler(this.checkBoxHint_CheckedChanged);
             // 
-            // labelIcon
-            // 
-            this.labelIcon.Font = new System.Drawing.Font("Wingdings", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
-            this.labelIcon.Location = new System.Drawing.Point(150, -1);
-            this.labelIcon.Name = "labelIcon";
-            this.labelIcon.Size = new System.Drawing.Size(26, 26);
-            this.labelIcon.TabIndex = 4;
-            this.labelIcon.Text = "?";
-            this.labelIcon.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -409,7 +409,7 @@
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.buttonRND);
+            this.Controls.Add(this.button1x1);
             this.Controls.Add(this.buttonLevel);
             this.Controls.Add(this.buttonStart);
             this.Controls.Add(this.groupBoxDisplay);
@@ -432,7 +432,7 @@
         private System.Windows.Forms.GroupBox groupBoxDisplay;
         private System.Windows.Forms.Button buttonStart;
         private System.Windows.Forms.Button buttonLevel;
-        private System.Windows.Forms.Button buttonRND;
+        private System.Windows.Forms.Button button1x1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;

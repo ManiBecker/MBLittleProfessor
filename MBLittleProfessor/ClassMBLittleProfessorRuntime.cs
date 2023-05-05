@@ -33,6 +33,7 @@ namespace MBLittleProfessor
         private int nLevel;
         private MathOperation eOP;
         private int nOP1, nOP2, nMinOP1, nMinOP2, nMaxOP1, nMaxOP2, nResult, nInput, nOP1X1, nOP1X1Input;
+        private int nOP1old, nOP2old;
         private string sExercise, sInput, sHint, sRating;
         private int NumberOfCalculations, NumberOfCorrectCalculations, NumberOfFalseCalculations, NumberOfTrials;
         private int nNextCalculationTicker, nSameCalculationTicker, nShowCompleteResultTicker, nSolutionNoteTicker, nRndCalculationTicker;
@@ -76,9 +77,9 @@ namespace MBLittleProfessor
                 if (nRndCalculationTicker == 0) nRndCalculationTicker = 4;
                 eOP = (MathOperation)nRndCalculationTicker - 1;
             }
-            else if (nRndCalculationTicker > 4 && nRndCalculationTicker <= 50)
+            else if (nRndCalculationTicker > 4 && nRndCalculationTicker <= 40)
             {
-                if (nRndCalculationTicker == 50)
+                if (nRndCalculationTicker == 40)
                 {
                     Random rand = new Random();
                     nOP1X1 = rand.Next(1, nMaxOP2);
@@ -147,44 +148,50 @@ namespace MBLittleProfessor
                 nMinOP2 = 1; //Division / 0 verhindern
             }
 
-            Random rand = new Random();
-            nOP1 = rand.Next(nMinOP1, nMaxOP1);
-            nOP2 = rand.Next(nMinOP2, nMaxOP2);
-            if (nOP1X1 > 0) nOP2 = nOP1X1;
-            switch (eOP)
+            do
             {
-                case MathOperation.ADD:
-                    nResult = nOP1 + nOP2;
-                    break;
-                case MathOperation.SUB:
-                    while (nOP1 < nOP2)
-                    {
-                        nOP1 = rand.Next(nMinOP1, nMaxOP1);
-                        nOP2 = rand.Next(nMinOP2, nMaxOP2);
-                        if (nOP1X1 > 0)
+                Random rand = new Random();
+                nOP1 = rand.Next(nMinOP1, nMaxOP1);
+                nOP2 = rand.Next(nMinOP2, nMaxOP2);
+                if (nOP1X1 > 0) nOP2 = nOP1X1;
+                switch (eOP)
+                {
+                    case MathOperation.ADD:
+                        nResult = nOP1 + nOP2;
+                        break;
+                    case MathOperation.SUB:
+                        while (nOP1 < nOP2)
                         {
-                            nOP2 = nOP1X1;
+                            nOP1 = rand.Next(nMinOP1, nMaxOP1);
+                            nOP2 = rand.Next(nMinOP2, nMaxOP2);
+                            if (nOP1X1 > 0)
+                            {
+                                nOP2 = nOP1X1;
+                            }
                         }
-                    }
-                    nResult = nOP1 - nOP2;
-                    break;
-                case MathOperation.MUL:
-                    while (nOP1 * nOP2 > 10000)
-                    {
-                        nOP1 = rand.Next(nMinOP1, nMaxOP1);
-                        nOP2 = rand.Next(nMinOP2, nMaxOP2);
-                        if (nOP1X1 > 0) nOP2 = nOP1X1;
-                    }
-                    nResult = nOP1 * nOP2;
-                    break;
-                case MathOperation.DIV:
-                    while (nOP1 % nOP2 > 0)
-                    {
-                        nOP1 = rand.Next(nMinOP1, nMaxOP1);
-                    }
-                    nResult = (int)(nOP1 / nOP2);
-                    break;
-            }
+                        nResult = nOP1 - nOP2;
+                        break;
+                    case MathOperation.MUL:
+                        while (nOP1 * nOP2 > 10000)
+                        {
+                            nOP1 = rand.Next(nMinOP1, nMaxOP1);
+                            nOP2 = rand.Next(nMinOP2, nMaxOP2);
+                            if (nOP1X1 > 0) nOP2 = nOP1X1;
+                        }
+                        nResult = nOP1 * nOP2;
+                        break;
+                    case MathOperation.DIV:
+                        while (nOP1 % nOP2 > 0)
+                        {
+                            nOP1 = rand.Next(nMinOP1, nMaxOP1);
+                        }
+                        nResult = (int)(nOP1 / nOP2);
+                        break;
+                }
+            } while (nOP1old == nOP1 && nOP2old == nOP2);
+            
+            nOP1old = nOP1; nOP2old = nOP2;
+
 
             // Aufgabenrechnung zusammensetzen und Eingabe zurücksetzen
             sExercise = nOP1.ToString() + GetMathOperation() + nOP2.ToString() + "=";
@@ -216,7 +223,7 @@ namespace MBLittleProfessor
             sInput = "-" + NumberOfFalseCalculations.ToString();
             sHint = grading[MaxNumberOfCalculations - NumberOfCorrectCalculations];
 
-            nShowCompleteResultTicker = 50;
+            nShowCompleteResultTicker = 40;
         }
 
         // Nächste Berechnung ermitteln
@@ -263,7 +270,7 @@ namespace MBLittleProfessor
             SetLevel(nLevel);
             if (nRndCalculationTicker > 0 && nRndCalculationTicker <= 4)
             {
-                nRndCalculationTicker = 50;
+                nRndCalculationTicker = 40;
             }
         }
 
@@ -275,7 +282,7 @@ namespace MBLittleProfessor
             SetLevel(nLevel);
             if (nRndCalculationTicker > 0 && nRndCalculationTicker <= 4)
             {
-                nRndCalculationTicker = 50;
+                nRndCalculationTicker = 40;
             }
         }
 
@@ -287,7 +294,7 @@ namespace MBLittleProfessor
             SetLevel(nLevel);
             if (nRndCalculationTicker > 0 && nRndCalculationTicker <= 4)
             {
-                nRndCalculationTicker = 50;
+                nRndCalculationTicker = 40;
             }
         }
 
@@ -299,12 +306,12 @@ namespace MBLittleProfessor
             SetLevel(nLevel);
             if (nRndCalculationTicker > 0 && nRndCalculationTicker <= 4)
             {
-                nRndCalculationTicker = 50;
+                nRndCalculationTicker = 40;
             }
         }
 
         // Nächste 1x1 Aufgabe
-        public void NextRND()
+        public void Next1x1()
         {
             ResetCalculations();
             //SetLevel(1);
@@ -414,6 +421,7 @@ namespace MBLittleProfessor
             nRndCalculationTicker = 0;
             nOP1X1 = -1;
             nOP1X1Input = -1;
+            nOP1old = nOP2old = -1;
             nLevel = 0;
             NextLevel();
         }

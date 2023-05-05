@@ -121,9 +121,9 @@ namespace MBLittleProfessor
             cLPRT.SetInput(9);
         }
 
-        private void buttonRND_Click(object sender, EventArgs e)
+        private void button1x1_Click(object sender, EventArgs e)
         {
-            cLPRT.NextRND();
+            cLPRT.Next1x1();
         }
 
         private void timerDisplay_Tick(object sender, EventArgs e)
@@ -291,7 +291,7 @@ namespace MBLittleProfessor
             }
             else if (e.KeyCode == Keys.R)
             {
-                cLPRT.NextRND();
+                cLPRT.Next1x1();
             }
             else if (e.KeyCode == Keys.H)
             {
