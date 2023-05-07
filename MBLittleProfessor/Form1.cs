@@ -9,6 +9,7 @@
  Modul   : Form1.cs
  Version : 1.00
  Datum   : 28.04.2023
+ Änderung: 08.05.2023
 
 \****************************************************************************/
 
@@ -27,7 +28,6 @@ namespace MBLittleProfessor
     public partial class FormMain : Form
     {
         private static ClassMBLittleProfessorRuntime cLPRT;
-        private int nRatingIndex = 4, nRatingDirection = -1;
 
         public FormMain()
         {
@@ -38,7 +38,6 @@ namespace MBLittleProfessor
         {
             cLPRT = new ClassMBLittleProfessorRuntime();
             timerDisplay.Enabled = true;
-            //Test
         }
 
         private void buttonStart_Click(object sender, EventArgs e)
@@ -146,16 +145,13 @@ namespace MBLittleProfessor
             if (labelHint.Text != cLPRT.GetHint())
             {
                 labelHint.Text = cLPRT.GetHint();
-                if (labelHint.Text == "Input?")
-                    labelIcon.Text = "?";
-                else if (labelHint.Text == "Error!")
-                    labelIcon.Text = "L"; // :(
-                else if (labelHint.Text == "Solution")
-                    labelIcon.Text = "K"; // :|
-                else if (labelHint.Text == "Correct!")
-                    labelIcon.Text = "J"; // :)
             }
 
+            if (labelIcon.Text != cLPRT.GetIcon())
+            {
+                labelIcon.Text = cLPRT.GetIcon();
+            } 
+            
             if (labelResult.Text != cLPRT.GetResult())
             {
                 labelResult.Text = cLPRT.GetResult();
@@ -196,35 +192,14 @@ namespace MBLittleProfessor
                 }
             }
 
-            if (cLPRT.GetRndCalculationTicker() > 0)
+            if (cLPRT.Get1x1CalculationTicker() > 0)
             {
-                cLPRT.DecRndCalculationTicker();
-                int ticker = cLPRT.GetRndCalculationTicker();
-
-                if (ticker > 0 && ticker <= 4)
-                {
-                    int op = ticker - 1;
-                    labelExercise.Text = "   " + cLPRT.GetMathOperation() + "  =";
-                    labelHint.Text = "+,-,*,/ ?";
-                }
-                else if (ticker > 4 && ticker <= 50)
-                {
-                    labelExercise.Text = "   " + cLPRT.GetMathOperation() + cLPRT.GetOP2().ToString() + "=";
-                    labelHint.Text = "OP2?";
-                }
+                cLPRT.Dec1x1CalculationTicker();
             }
 
             if (cLPRT.GetShowCompleteResultTicker() > 0)
             {
                 cLPRT.DecShowCompleteResultTicker();
-
-                if (cLPRT.GetNumberOfFalseCalculations() == 0)
-                {
-                    labelRating.Text = "    *    ".Substring(nRatingIndex, 5);
-                    nRatingIndex = nRatingIndex + nRatingDirection;
-                    if (nRatingIndex == 0 || nRatingIndex == 4) nRatingDirection = nRatingDirection * -1;
-                }
-
                 if (cLPRT.GetShowCompleteResultTicker() == 1)
                 {
                     cLPRT.ResetCalculations();

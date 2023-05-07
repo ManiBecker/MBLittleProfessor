@@ -9,6 +9,7 @@
  Modul   : ClassMBLittleProfessorRuntime.cs
  Version : 1.00
  Datum   : 28.04.2023
+ Änderung: 08.05.2023
 
 \****************************************************************************/
 
@@ -34,9 +35,10 @@ namespace MBLittleProfessor
         private MathOperation eOP;
         private int nOP1, nOP2, nMinOP1, nMinOP2, nMaxOP1, nMaxOP2, nResult, nInput, nOP1X1, nOP1X1Input;
         private int nOP1old, nOP2old;
-        private string sExercise, sInput, sHint, sRating;
+        private string sExercise, sInput, sHint, sRating, sIcon;
         private int NumberOfCalculations, NumberOfCorrectCalculations, NumberOfFalseCalculations, NumberOfTrials;
-        private int nNextCalculationTicker, nSameCalculationTicker, nShowCompleteResultTicker, nSolutionNoteTicker, nRndCalculationTicker;
+        private int nNextCalculationTicker, nSameCalculationTicker, nShowCompleteResultTicker, nSolutionNoteTicker, n1x1CalculationTicker;
+        private int nRatingIndex = 4, nRatingDirection = -1;
 
 
         // Konstruktor
@@ -52,42 +54,107 @@ namespace MBLittleProfessor
         public string GetResult() { return nResult.ToString(); }
         public string GetHint() { return sHint; }
         public string GetRating() { return sRating; }
+        public string GetIcon() { return sIcon; }
         public int GetNumberOfCalculations() { return NumberOfCalculations; }
         public int GetNumberOfCorrectCalculations() { return NumberOfCorrectCalculations; }
         public int GetNumberOfFalseCalculations() { return NumberOfFalseCalculations; }
         public int GetNumberOfTrials() { return NumberOfTrials; }
         public int GetNextCalculationTicker() { return nNextCalculationTicker; }
-        public void DecNextCalculationTicker() { nNextCalculationTicker--; }
+        public void DecNextCalculationTicker()
+        { 
+            nNextCalculationTicker--;
+
+            if(nNextCalculationTicker > 0)
+            {
+                if (sHint == "Correct!")
+                {
+                    if (sIcon == "J")
+                        sIcon = "K"; // :|
+                    else
+                        sIcon = "J"; // :)
+                }
+            }
+        }
         public int GetSameCalculationTicker() { return nSameCalculationTicker; }
-        public void DecSameCalculationTicker() { nSameCalculationTicker--; }
+        public void DecSameCalculationTicker()
+        { 
+            nSameCalculationTicker--;
+            
+            if (nSameCalculationTicker > 0)
+            {
+                if (sHint == "Error!")
+                {
+                    if (sIcon == "L")
+                        sIcon = "K"; // :|
+                    else
+                        sIcon = "L"; // :(
+                }
+            }
+        }
         public int GetShowCompleteResultTicker() { return nShowCompleteResultTicker; }
-        public void DecShowCompleteResultTicker() { nShowCompleteResultTicker--; }
+        public void DecShowCompleteResultTicker()
+        { 
+            nShowCompleteResultTicker--;
+
+            if (nShowCompleteResultTicker > 0 && NumberOfFalseCalculations == 0)
+            {
+                sRating = "    *    ".Substring(nRatingIndex, 5);
+                nRatingIndex = nRatingIndex + nRatingDirection;
+                if (nRatingIndex == 0 || nRatingIndex == 4) nRatingDirection = nRatingDirection * -1;
+
+                if (sIcon == "J")
+                    sIcon = "K"; // :|
+                else
+                    sIcon = "J"; // :)
+            }
+        }
         public int GetSolutionNoteTicker() { return nSolutionNoteTicker; }
-        public void DecSolutionNoteTicker() { nSolutionNoteTicker--; }
-        public int GetRndCalculationTicker() { return nRndCalculationTicker; }
+        public void DecSolutionNoteTicker() 
+        { 
+            nSolutionNoteTicker--;
+
+            if (nSolutionNoteTicker > 0)
+            {
+                if (sHint == "Error!")
+                {
+                    if (sIcon == "L")
+                        sIcon = "K"; // :|
+                    else
+                        sIcon = "L"; // :(
+                }
+            }
+        }
+        public int Get1x1CalculationTicker() { return n1x1CalculationTicker; }
         public string GetInput() { return sInput; }
         public string GetExercise() { return sExercise; }
 
-        public void DecRndCalculationTicker()
+        public void Dec1x1CalculationTicker()
         {
 
-            if (nRndCalculationTicker > 0 && nRndCalculationTicker <= 4)
+            if (n1x1CalculationTicker > 0 && n1x1CalculationTicker <= 4)
             {
-                nRndCalculationTicker--; 
-                if (nRndCalculationTicker == 0) nRndCalculationTicker = 4;
-                eOP = (MathOperation)nRndCalculationTicker - 1;
+                n1x1CalculationTicker--; 
+                if (n1x1CalculationTicker == 0) n1x1CalculationTicker = 4;
+                eOP = (MathOperation)n1x1CalculationTicker - 1;
+
+
+                sExercise = "   " + GetMathOperation() + "  =";
+                sHint = "+,-,*,/ ?";
             }
-            else if (nRndCalculationTicker > 4 && nRndCalculationTicker <= 40)
+            else if (n1x1CalculationTicker > 4 && n1x1CalculationTicker <= 40)
             {
-                if (nRndCalculationTicker == 40)
+                if (n1x1CalculationTicker == 40)
                 {
                     Random rand = new Random();
                     nOP1X1 = rand.Next(1, nMaxOP2);
                     nOP1X1Input = -1;
-                    SetLevel(nLevel);
                 }
-                nRndCalculationTicker--;
-                if (nRndCalculationTicker == 4) nRndCalculationTicker = 0;
+                n1x1CalculationTicker--;
+                if (n1x1CalculationTicker == 4)
+                {
+                    n1x1CalculationTicker = 0;
+                    ResetInput();
+                }
             }
         }
 
@@ -192,16 +259,25 @@ namespace MBLittleProfessor
             
             nOP1old = nOP1; nOP2old = nOP2;
 
-
-            // Aufgabenrechnung zusammensetzen und Eingabe zurücksetzen
-            sExercise = nOP1.ToString() + GetMathOperation() + nOP2.ToString() + "=";
             ResetInput();
+
         }
 
-        // Eingabe zurücksetzen
+        // Eingabe zurücksetzen und Aufgabenrechnung zusammensetzen
         public void ResetInput()
         {
-            sHint = "Input?";
+            if (n1x1CalculationTicker > 0)
+            {
+                sHint = "OP2?";
+                sExercise = "   " + GetMathOperation() + nOP2.ToString() + "=";
+            }
+            else
+            {
+                sHint = "Input?";
+                sIcon = "?";
+                sExercise = nOP1.ToString() + GetMathOperation() + nOP2.ToString() + "=";
+            }
+
             sInput = "";
             nInput = -1;
         }
@@ -219,9 +295,19 @@ namespace MBLittleProfessor
         // Spielergebnis anzeigen
         private void ShowCompleteResult()
         {
+            int nGrade = MaxNumberOfCalculations - NumberOfCorrectCalculations;
+
             sExercise = "+" + NumberOfCorrectCalculations.ToString();
             sInput = "-" + NumberOfFalseCalculations.ToString();
-            sHint = grading[MaxNumberOfCalculations - NumberOfCorrectCalculations];
+
+            sHint = grading[nGrade];
+
+            if (nGrade == 0 || nGrade == 1)
+                sIcon = "J"; // :)
+            else if (nGrade == 2 || nGrade == 3)
+                sIcon = "K"; // :|
+            else
+                sIcon = "L"; // :(
 
             nShowCompleteResultTicker = 40;
         }
@@ -257,6 +343,7 @@ namespace MBLittleProfessor
         public void ShowSolutionNote()
         {
             sHint = "Solution";
+            sIcon = "K"; // :|
             sInput = nResult.ToString();
 
             nNextCalculationTicker = 20;
@@ -265,57 +352,56 @@ namespace MBLittleProfessor
         // Nächste Addition
         public void NextAddition()
         {
+            if (n1x1CalculationTicker > 0 && n1x1CalculationTicker <= 4)
+            {
+                n1x1CalculationTicker = 40;
+            }
             ResetCalculations();
             SetMathOperation(MathOperation.ADD);
             SetLevel(nLevel);
-            if (nRndCalculationTicker > 0 && nRndCalculationTicker <= 4)
-            {
-                nRndCalculationTicker = 40;
-            }
         }
 
         // Nächste Subtraktion
         public void NextSubtraction()
         {
+            if (n1x1CalculationTicker > 0 && n1x1CalculationTicker <= 4)
+            {
+                n1x1CalculationTicker = 40;
+            }
             ResetCalculations();
             SetMathOperation(MathOperation.SUB);
             SetLevel(nLevel);
-            if (nRndCalculationTicker > 0 && nRndCalculationTicker <= 4)
-            {
-                nRndCalculationTicker = 40;
-            }
         }
 
         // Nächste Multiplikation
         public void NextMultiplication()
         {
+            if (n1x1CalculationTicker > 0 && n1x1CalculationTicker <= 4)
+            {
+                n1x1CalculationTicker = 40;
+            }
             ResetCalculations();
             SetMathOperation(MathOperation.MUL);
             SetLevel(nLevel);
-            if (nRndCalculationTicker > 0 && nRndCalculationTicker <= 4)
-            {
-                nRndCalculationTicker = 40;
-            }
         }
 
         // Nächste Division
         public void NextDivision()
         {
+            if (n1x1CalculationTicker > 0 && n1x1CalculationTicker <= 4)
+            {
+                n1x1CalculationTicker = 40;
+            }
             ResetCalculations();
             SetMathOperation(MathOperation.DIV);
             SetLevel(nLevel);
-            if (nRndCalculationTicker > 0 && nRndCalculationTicker <= 4)
-            {
-                nRndCalculationTicker = 40;
-            }
         }
 
         // Nächste 1x1 Aufgabe
         public void Next1x1()
         {
             ResetCalculations();
-            //SetLevel(1);
-            nRndCalculationTicker = 1;
+            n1x1CalculationTicker = 1;
         }
 
         // Zufällige Operation ermitteln
@@ -344,7 +430,7 @@ namespace MBLittleProfessor
                 return nReturnValue;
             }
 
-            if (nRndCalculationTicker > 0)
+            if (n1x1CalculationTicker > 0)
             {
                 if (nOP1X1Input == -1 && value > 0)
                     nOP1X1Input = value;
@@ -375,6 +461,7 @@ namespace MBLittleProfessor
                 {
                     nReturnValue = -1;
                     sHint = "Error!";
+                    sIcon = "L"; // :(
                     NumberOfTrials++;
                     if (NumberOfTrials == MaxNumberOfTrials)
                     {
@@ -394,6 +481,7 @@ namespace MBLittleProfessor
             {
                 nReturnValue = nInput;
                 sHint = "Correct!";
+                sIcon = "J"; // :)
                 NumberOfCalculations++;
                 NumberOfCorrectCalculations++;
                 NumberOfTrials = 0;
@@ -418,7 +506,7 @@ namespace MBLittleProfessor
         public void Start()
         {
             eOP = MathOperation.ADD;
-            nRndCalculationTicker = 0;
+            n1x1CalculationTicker = 0;
             nOP1X1 = -1;
             nOP1X1Input = -1;
             nOP1old = nOP2old = -1;
