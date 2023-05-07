@@ -1,2 +1,6 @@
 # MBLittleProfessor
-Eine Simulation des IT Little Professor
+Eine Simulation des Little Professor von Texas Instruments.
+
+Sprache : C#
+Compiler: MS Visual Studio 2008
+Autor   : Manfred Becker
